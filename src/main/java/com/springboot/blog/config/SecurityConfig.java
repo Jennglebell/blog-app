@@ -17,7 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity // enable method level security like PreAuthorize...
 public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
@@ -45,10 +45,11 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
-                        authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // allow all users to access all Get end points
+                                .requestMatchers("/api/auth/**").permitAll() // allow all users to access all auth end points
                                 .anyRequest().authenticated()
 
-                ).httpBasic(Customizer.withDefaults());
+                );
 
         return http.build();
     }

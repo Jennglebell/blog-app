@@ -23,7 +23,7 @@ public class PostController {
     }
 
     // create blog post, @ResquestBody will convert JSON into Jave object
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") // only admin can create post
     @PostMapping
     public ResponseEntity<PostDto> createPost (@Valid @RequestBody PostDto postDto) { // @Valid will validate the request body
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -47,7 +47,7 @@ public class PostController {
     }
 
     // update post rest api
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") // only admin can update post
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@PathVariable(name = "id") long id, @Valid @RequestBody PostDto postDto) {
         PostDto postResponse = postService.updatePost(postDto, id);
@@ -55,7 +55,7 @@ public class PostController {
     }
 
     // delete post rest api
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") // only admin can delete post
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
         postService.DeletePostById(id);
