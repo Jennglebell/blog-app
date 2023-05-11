@@ -1,11 +1,13 @@
 package com.springboot.blog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -26,4 +28,9 @@ public class Post {
 
     @Column(name = "content", nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    // mappedBy = "post": tells Hibernate to look for a field named post in the Comment entity to find the configuration for the JoinColumn/ForeignKey column
+    // post is the owning side of the relationship
+    private Set<Comment> comments = new HashSet<>();
 }
