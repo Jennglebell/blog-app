@@ -66,8 +66,8 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
-                        authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // allow all users to access all Get end points
-                                .requestMatchers("/api/auth/**").permitAll() // allow all users to access all auth end points
+                        authorize.requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll() // allow all users to access all Get end points
+                                .requestMatchers("/api/v1/auth/**").permitAll() // allow all users to access all auth end points
                                 .requestMatchers("/swagger-ui/**").permitAll()// provide public access to swagger url
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()

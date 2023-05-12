@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
 @Tag(
         name = "CRUD REST APIs for Post Resource"
 )
@@ -30,7 +29,7 @@ public class PostController {
     }
 
     // create blog post, @ResquestBody will convert JSON into Jave object
-    @PostMapping
+    @PostMapping("/api/v1/posts")
     @PreAuthorize("hasRole('ADMIN')") // only admin can create post
     @SecurityRequirement(
             name = "Bearer Authentication"
@@ -48,7 +47,7 @@ public class PostController {
     }
 
     // get all posts rest api
-    @GetMapping
+    @GetMapping("/api/v1/posts")
     @Operation(
             summary = "Get All Posts REST API",
             description = "Get All Posts REST API is used to get all Posts from database"
@@ -67,7 +66,7 @@ public class PostController {
     }
 
     // get post by id rest api
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/posts/{id}")
     @Operation(
             summary = "Get Post by Id REST API",
             description = "Get Post by Id REST API is used to get a single Post from database"
@@ -81,7 +80,7 @@ public class PostController {
     }
 
     // update post rest api
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/posts/{id}")
     @PreAuthorize("hasRole('ADMIN')") // only admin can update post
     @SecurityRequirement(
             name = "Bearer Authentication"
@@ -100,7 +99,7 @@ public class PostController {
     }
 
     // delete post rest api
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/posts/{id}")
     @PreAuthorize("hasRole('ADMIN')") // only admin can delete post
     @SecurityRequirement(
             name = "Bearer Authentication"
@@ -119,7 +118,7 @@ public class PostController {
     }
 
     // get posts by category api
-    @GetMapping("/category/{id}")
+    @GetMapping("/api/v1/posts/category/{id}")
     @Operation(
             summary = "Get All Posts by Category REST API",
             description = "Get All Posts by Category REST API is used to get all Posts belonging to a particular Category from database"
