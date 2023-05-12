@@ -4,6 +4,10 @@ import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@Tag(
+        name = "CRUD REST APIs for Post Resource"
+)
 public class PostController {
 
     private PostService postService;
@@ -23,14 +30,33 @@ public class PostController {
     }
 
     // create blog post, @ResquestBody will convert JSON into Jave object
-    @PreAuthorize("hasRole('ADMIN')") // only admin can create post
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')") // only admin can create post
+    @SecurityRequirement(
+            name = "Bearer Authentication"
+    )
+    @Operation(
+            summary = "Create Post REST API",
+            description = "Create Post REST API is used to save Post into database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     public ResponseEntity<PostDto> createPost (@Valid @RequestBody PostDto postDto) { // @Valid will validate the request body
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
     // get all posts rest api
     @GetMapping
+    @Operation(
+            summary = "Get All Posts REST API",
+            description = "Get All Posts REST API is used to get all Posts from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -42,21 +68,51 @@ public class PostController {
 
     // get post by id rest api
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Get Post by Id REST API",
+            description = "Get Post by Id REST API is used to get a single Post from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
     }
 
     // update post rest api
-    @PreAuthorize("hasRole('ADMIN')") // only admin can update post
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')") // only admin can update post
+    @SecurityRequirement(
+            name = "Bearer Authentication"
+    )
+    @Operation(
+            summary = "Update Post REST API",
+            description = "Update Post REST API is used to update a particular Post in database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     public ResponseEntity<PostDto> updatePost(@PathVariable(name = "id") long id, @Valid @RequestBody PostDto postDto) {
         PostDto postResponse = postService.updatePost(postDto, id);
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
     // delete post rest api
-    @PreAuthorize("hasRole('ADMIN')") // only admin can delete post
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')") // only admin can delete post
+    @SecurityRequirement(
+            name = "Bearer Authentication"
+    )
+    @Operation(
+            summary = "Delete Post REST API",
+            description = "Delete Post REST API is used to delete a particular Post from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
         postService.DeletePostById(id);
         return new ResponseEntity<>("Post entity deleted successfully.", HttpStatus.OK);
@@ -64,6 +120,14 @@ public class PostController {
 
     // get posts by category api
     @GetMapping("/category/{id}")
+    @Operation(
+            summary = "Get All Posts by Category REST API",
+            description = "Get All Posts by Category REST API is used to get all Posts belonging to a particular Category from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable("id") Long categoryId) {
         List<PostDto> postDtos = postService.getPostsByCategory(categoryId);
         return ResponseEntity.ok(postDtos);
