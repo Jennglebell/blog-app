@@ -33,4 +33,8 @@ public class Post {
     // mappedBy = "post": tells Hibernate to look for a field named post in the Comment entity to find the configuration for the JoinColumn/ForeignKey column
     // post is the owning side of the relationship
     private Set<Comment> comments = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id") // catogories is the parent table and posts is the child table, we need to use parent id as the foreign key in the child table
+    private Category category;
 }
