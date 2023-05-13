@@ -3,6 +3,8 @@ package com.springboot.blog.repository;
 import com.springboot.blog.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //            "p.name LIKE CONCAT('%', :query, '%')" +
 //            "OR p.description LIKE CONCAT('%', :query, '%')", nativeQuery = true)
 //    List<Product> searchProductsSQL(String query);
+
+//    @Override
+//    @Transactional(timeout = 10)
+//    void deleteById(Long id);
 }
